@@ -1,0 +1,35 @@
+
+import { useState } from "react";
+
+export default function HtmlPreviewer() {
+  const [htmlContent, setHtmlContent] = useState("");
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type === "text/html") {
+      const reader = new FileReader();
+      reader.onload = (e) => setHtmlContent(e.target.result);
+      reader.readAsText(file);
+    } else {
+      alert("Please upload a valid HTML file.");
+    }
+  };
+
+  return (
+    <div className="p-4 flex flex-col items-center">
+      <input
+        type="file"
+        accept=".html"
+        onChange={handleFileUpload}
+        className="mb-4 p-2 border rounded"
+      />
+      <div className="w-full h-[500px] border rounded overflow-hidden">
+        <iframe
+          title="HTML Preview"
+          srcDoc={htmlContent}
+          className="w-full h-full"
+        ></iframe>
+      </div>
+    </div>
+  );
+}
